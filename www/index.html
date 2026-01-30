@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSFuck Compiler (Rust + Wasm)</title>
+    <style>
+        body { margin: 0; padding: 0; background-color: #1e1e1e; color: #d4d4d4; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; }
+        header { padding: 10px 20px; background-color: #252526; border-bottom: 1px solid #3e3e42; display: flex; justify-content: space-between; align-items: center; }
+        h1 { margin: 0; font-size: 1.2rem; font-weight: 500; }
+        .controls { display: flex; gap: 10px; align-items: center; }
+        button { background-color: #0e639c; color: white; border: none; padding: 6px 14px; cursor: pointer; border-radius: 2px; }
+        button:hover { background-color: #1177bb; }
+        button:disabled { background-color: #4b4b4b; cursor: not-allowed; opacity: 0.6; }
+        #container { flex: 1; display: flex; overflow: hidden; }
+        .pane { flex: 1; display: flex; flex-direction: column; border-right: 1px solid #3e3e42; min-width: 0; }
+        .pane-header { padding: 5px 10px; background-color: #2d2d2d; font-size: 0.85rem; text-transform: uppercase; color: #aaaaaa; }
+        .editor-wrapper { flex: 1; position: relative; }
+        #editor-input, #editor-output { position: absolute; top: 0; bottom: 0; left: 0; right: 0; }
+        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #3498db; border-radius: 50%; width: 12px; height: 12px; animation: spin 1s linear infinite; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>JSFuck Compiler <span style="font-size: 0.8em; color: #888;">(Rust + Wasm)</span></h1>
+        <div class="controls">
+            <span id="status">Loading...</span>
+            <div id="loader" class="loader"></div>
+            <label><input type="checkbox" id="minify-check" checked> Minify</label>
+            <button id="compile-btn" disabled>Compile</button>
+            <button id="run-btn" style="background-color: #388e3c;" disabled>Run</button>
+        </div>
+    </header>
+    <div id="container">
+        <div class="pane">
+            <div class="pane-header">Input JavaScript</div>
+            <div class="editor-wrapper"><div id="editor-input"></div></div>
+        </div>
+        <div class="pane">
+            <div class="pane-header">Output JSFuck</div>
+            <div class="editor-wrapper"><div id="editor-output"></div></div>
+        </div>
+    </div>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

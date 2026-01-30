@@ -1,0 +1,16 @@
+# Rust
+/target/
+/Cargo.lock
+
+# Wasm generated
+/pkg/
+/www/pkg/
+
+# Node/Web generated
+/node_modules/
+/www/node_modules/
+/www/dist/
+
+# OS specific
+.DS_Store
+Thumbs.db
