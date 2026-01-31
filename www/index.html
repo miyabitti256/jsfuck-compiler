@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSFuck Compiler (Rust + Wasm)</title>
+    <title>JSFuck Encoder (Rust + Wasm)</title>
     <style>
         body { margin: 0; padding: 0; background-color: #1e1e1e; color: #d4d4d4; font-family: 'Segoe UI', sans-serif; height: 100vh; display: flex; flex-direction: column; }
         header { padding: 10px 20px; background-color: #252526; border-bottom: 1px solid #3e3e42; display: flex; justify-content: space-between; align-items: center; }
@@ -23,13 +23,14 @@
 </head>
 <body>
     <header>
-        <h1>JSFuck Compiler <span style="font-size: 0.8em; color: #888;">(Rust + Wasm)</span></h1>
+        <h1>JSFuck Encoder <span style="font-size: 0.8em; color: #888;">(Rust + Wasm)</span></h1>
         <div class="controls">
             <span id="status">Loading...</span>
             <div id="loader" class="loader"></div>
             <label><input type="checkbox" id="minify-check" checked> Minify</label>
             <button id="compile-btn" disabled>Compile</button>
             <button id="run-btn" style="background-color: #388e3c;" disabled>Run</button>
+            <button id="download-btn" style="background-color: #d8a11e;" disabled>Download</button>
         </div>
     </header>
     <div id="container">

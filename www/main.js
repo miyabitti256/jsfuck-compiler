@@ -5,7 +5,7 @@ import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
 import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 
-import init, { compile_to_jsfuck } from './pkg/jsfuck_compiler.js';
+import init, { compile_to_jsfuck } from './pkg/jsfuck_encoder.js';
 
 // Monaco Worker Environment Setup
 self.MonacoEnvironment = {
@@ -33,6 +33,7 @@ async function start() {
     const loaderEl = document.getElementById('loader');
     const compileBtn = document.getElementById('compile-btn');
     const runBtn = document.getElementById('run-btn');
+    const downloadBtn = document.getElementById('download-btn');
 
     loaderEl.style.display = 'inline-block';
 
@@ -65,10 +66,12 @@ async function start() {
         loaderEl.style.display = 'none';
         compileBtn.disabled = false;
         runBtn.disabled = false;
+        downloadBtn.disabled = false; // Enabled, but check content on click
 
         // Events
         compileBtn.addEventListener('click', compile);
         runBtn.addEventListener('click', runCode);
+        downloadBtn.addEventListener('click', downloadCode);
 
     } catch (e) {
         console.error(e);
@@ -82,6 +85,11 @@ function compile() {
     const minify = document.getElementById('minify-check').checked;
     const statusEl = document.getElementById('status');
     
+    if (!code.trim()) {
+        statusEl.textContent = 'Input is empty';
+        return;
+    }
+
     statusEl.textContent = 'Compiling...';
     // Use setTimeout to allow UI update
     setTimeout(() => {
@@ -89,8 +97,13 @@ function compile() {
         try {
             const result = compile_to_jsfuck(code, minify);
             outputEditor.setValue(result);
+            
             const time = (performance.now() - start).toFixed(2);
-            statusEl.textContent = `Done in ${time}ms (${result.length} bytes)`;
+            const originalSize = code.length;
+            const newSize = result.length;
+            const ratio = (newSize / originalSize).toFixed(1);
+            
+            statusEl.textContent = `Done in ${time}ms | Size: ${newSize.toLocaleString()} chars (x${ratio})`;
         } catch (e) {
             console.error(e);
             statusEl.textContent = 'Failed';
@@ -107,6 +120,24 @@ function runCode() {
     } catch (e) {
         alert('Runtime Error: ' + e);
     }
+}
+
+function downloadCode() {
+    const code = outputEditor.getValue();
+    if (!code) {
+        alert("No compiled code to download.");
+        return;
+    }
+    
+    const blob = new Blob([code], { type: "application/javascript" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "output.js";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 start();

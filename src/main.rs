@@ -1,7 +1,7 @@
 use std::env;
 use std::fs;
 use std::process;
-use jsfuck_compiler::{Encoder, minify};
+use jsfuck_encoder::{Encoder, minify};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
